@@ -1,6 +1,7 @@
 package com.ru.usty.elevator;
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 /**
  * The base function definitions of this class must stay the same
@@ -11,13 +12,22 @@ import java.util.ArrayList;
  */
 
 public class ElevatorScene {
-
+	
+	public static Semaphore elevatorDoorInSemaphore;
+	
+	public static Semaphore personCountMutex;
+	
+	public static ElevatorScene scene; 
+	
+	public int numberOfPeopleInElevator1 = 0; 
+	
 	//TO SPEED THINGS UP WHEN TESTING,
 	//feel free to change this.  It will be changed during grading
 	public static final int VISUALIZATION_WAIT_TIME = 500;  //milliseconds
-
+	
 	private int numberOfFloors;
 	private int numberOfElevators;
+	
 
 	ArrayList<Integer> personCount; //use if you want but
 									//throw away and
@@ -28,6 +38,25 @@ public class ElevatorScene {
 	//Necessary to add your code in this one
 	public void restartScene(int numberOfFloors, int numberOfElevators) {
 
+		scene = this;
+		elevatorDoorInSemaphore = new Semaphore(0);
+		personCountMutex = new Semaphore(1);
+		
+		new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				
+				
+				for(int i = 0 ; i < 15 ; i++){
+					//let the persons out of the line
+					ElevatorScene.elevatorDoorInSemaphore.release();
+
+				}
+			}
+		}).start();
+		
+		
 		/**
 		 * Important to add code here to make new
 		 * threads that run your elevator-runnables
@@ -39,6 +68,7 @@ public class ElevatorScene {
 		 * elevator threads to stop
 		 */
 
+		
 		this.numberOfFloors = numberOfFloors;
 		this.numberOfElevators = numberOfElevators;
 
@@ -51,7 +81,12 @@ public class ElevatorScene {
 	//Base function: definition must not change
 	//Necessary to add your code in this one
 	public Thread addPerson(int sourceFloor, int destinationFloor) {
-
+		
+		//create new thread for the person and start it. Make it run.
+		Thread thread = new Thread(new Person(sourceFloor, destinationFloor));
+		
+		thread.start();
+		
 		/**
 		 * Important to add code here to make a
 		 * new thread that runs your person-runnable
@@ -63,7 +98,9 @@ public class ElevatorScene {
 
 		//dumb code, replace it!
 		personCount.set(sourceFloor, personCount.get(sourceFloor) + 1);
-		return null;  //this means that the testSuite will not wait for the threads to finish
+		
+		//return the person into the system
+		return thread;  //this means that the testSuite will not wait for the threads to finish
 	}
 
 	//Base function: definition must not change, but add your code
@@ -80,14 +117,47 @@ public class ElevatorScene {
 		switch(elevator) {
 		case 1: return 1;
 		case 2: return 4;
-		default: return 3;
+		default: return 2;
 		}
 	}
+	
+	
 
 	//Base function: definition must not change, but add your code
 	public int getNumberOfPeopleWaitingAtFloor(int floor) {
 
 		return personCount.get(floor);
+	}
+	
+	public void decrementNumberOfPeopleWaitingAtFloor(int floor){
+		
+		try {
+			//put Mutex cause only one can use this critical section at one time
+			personCountMutex.acquire();
+				personCount.set(floor, personCount.get(floor) - 1);
+			personCountMutex.release();
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+	}
+	
+	public void increamentNumberOfPeopleWaitingAtFloor(int floor){
+		
+		try {
+			//put Mutex cause only one can use this critical section at one time
+			personCountMutex.acquire();
+				personCount.set(floor, personCount.get(floor) + 1);
+			personCountMutex.release();
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		
 	}
 
 	//Base function: definition must not change, but add your code if needed
