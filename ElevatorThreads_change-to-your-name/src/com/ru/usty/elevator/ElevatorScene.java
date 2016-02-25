@@ -20,6 +20,7 @@ public class ElevatorScene {
 	public static ElevatorScene scene; 
 	
 	public int numberOfPeopleInElevator1 = 0; 
+
 	
 	//TO SPEED THINGS UP WHEN TESTING,
 	//feel free to change this.  It will be changed during grading

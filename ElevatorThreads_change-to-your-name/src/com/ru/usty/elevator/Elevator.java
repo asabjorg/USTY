@@ -1,4 +1,4 @@
-package com.ru.usty.elevator;
+	package com.ru.usty.elevator;
 
 public class Elevator implements Runnable {
 
