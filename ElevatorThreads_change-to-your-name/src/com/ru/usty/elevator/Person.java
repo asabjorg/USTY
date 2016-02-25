@@ -4,8 +4,6 @@ public class Person implements Runnable{
 
 	int sourceFloor, destFloor;
 	
-	
-	
 	public Person(int sourceFloor, int destFloor){
 		
 		this.sourceFloor = sourceFloor; 
@@ -21,15 +19,20 @@ public class Person implements Runnable{
 			
 			//wait for their turn to go into the elevator
 			ElevatorScene.elevatorDoorInSemaphore.acquire();
+			
 			//I'm off the floor so I decrement the number 
-			ElevatorScene.scene.decrementNumberOfPeopleWaitingAtFloor(sourceFloor);
-			ElevatorScene.scene.incrementNumberOfPeopleInElevator(1);
+			ElevatorScene.scene.decrementNumberOfPeopleWaitingAtFloor(0);
 			
+			//I want to go out of the elevator
+			ElevatorScene.scene.incrementNumberOfPeopleInElevator(0);
+			
+		
 			ElevatorScene.elevatorDoorOutSemaphore.acquire();
+			System.out.println("acquire");
 			
-			//System.out.println("Thread relesaed");
-			
-			
+	
+			ElevatorScene.scene.decrementNumberOfPeopleInElevator(0);
+		
 			
 			
 		} catch (InterruptedException e) {

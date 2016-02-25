@@ -19,11 +19,13 @@ public class ElevatorScene {
 	
 	public static Semaphore personCountMutex;
 	
+	public static Semaphore floorCountMutex;
+	
 	public static Semaphore elecvatorCountMutex;
 	
 	public static ElevatorScene scene; 
 	
-	public static int floorCount = 1; 
+	public static int floorCount = 0; 
 	
 	public static int numberOfPeopleInElevator = 0; 
 
@@ -50,10 +52,11 @@ public class ElevatorScene {
 		elevatorDoorOutSemaphore = new Semaphore(0);
 		personCountMutex = new Semaphore(1);
 		elecvatorCountMutex = new Semaphore(1);
+		floorCountMutex = new Semaphore(1); 
+	
 		
 		Thread thread = new Thread(new Elevator());
 		thread.start();
-		
 		
 		
 		/**
@@ -82,7 +85,7 @@ public class ElevatorScene {
 	public Thread addPerson(int sourceFloor, int destinationFloor) {
 		
 		//create new thread for the person and start it. Make it run.
-		Thread thread = new Thread(new Person(sourceFloor, destinationFloor));
+		Thread thread = new Thread(new Person(0, 1));
 		
 		thread.start();
 		
@@ -107,6 +110,20 @@ public class ElevatorScene {
 		
 		return floorCount;
 	}
+	
+	public void decrementElevatorFloor(int elevator) {
+		
+		
+		floorCount -= 1;
+		
+	}
+	
+	public void incrementElevatorFloor(int elevator) {
+		
+				floorCount += 1;
+	
+			
+	}
 
 	//Base function: definition must not change, but add your code
 	public int getNumberOfPeopleInElevator(int elevator) {
@@ -123,14 +140,9 @@ public class ElevatorScene {
 	
 	public void decrementNumberOfPeopleInElevator(int elevator){
 		
-		try {
-			elecvatorCountMutex.acquire();
+
 				numberOfPeopleInElevator--;
-			elecvatorCountMutex.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 			
 	}
 	
