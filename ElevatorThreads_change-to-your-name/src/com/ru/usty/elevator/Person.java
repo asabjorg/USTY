@@ -23,9 +23,13 @@ public class Person implements Runnable{
 			ElevatorScene.elevatorDoorInSemaphore.acquire();
 			//I'm off the floor so I decrement the number 
 			ElevatorScene.scene.decrementNumberOfPeopleWaitingAtFloor(sourceFloor);
+			ElevatorScene.scene.incrementNumberOfPeopleInElevator(1);
+			
+			ElevatorScene.elevatorDoorOutSemaphore.acquire();
+			
+			//System.out.println("Thread relesaed");
 			
 			
-			System.out.println("Thread relesaed");
 			
 			
 		} catch (InterruptedException e) {

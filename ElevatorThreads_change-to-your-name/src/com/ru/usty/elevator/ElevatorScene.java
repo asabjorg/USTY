@@ -15,11 +15,17 @@ public class ElevatorScene {
 	
 	public static Semaphore elevatorDoorInSemaphore;
 	
+	public static Semaphore elevatorDoorOutSemaphore;
+	
 	public static Semaphore personCountMutex;
+	
+	public static Semaphore elecvatorCountMutex;
 	
 	public static ElevatorScene scene; 
 	
-	public int numberOfPeopleInElevator1 = 0; 
+	public static int floorCount = 1; 
+	
+	public static int numberOfPeopleInElevator = 0; 
 
 	
 	//TO SPEED THINGS UP WHEN TESTING,
@@ -41,21 +47,13 @@ public class ElevatorScene {
 
 		scene = this;
 		elevatorDoorInSemaphore = new Semaphore(0);
+		elevatorDoorOutSemaphore = new Semaphore(0);
 		personCountMutex = new Semaphore(1);
+		elecvatorCountMutex = new Semaphore(1);
 		
-		new Thread(new Runnable(){
-
-			@Override
-			public void run() {
-				
-				
-				for(int i = 0 ; i < 15 ; i++){
-					//let the persons out of the line
-					ElevatorScene.elevatorDoorInSemaphore.release();
-
-				}
-			}
-		}).start();
+		Thread thread = new Thread(new Elevator());
+		thread.start();
+		
 		
 		
 		/**
@@ -106,22 +104,41 @@ public class ElevatorScene {
 
 	//Base function: definition must not change, but add your code
 	public int getCurrentFloorForElevator(int elevator) {
-
-		//dumb code, replace it!
-		return 1;
+		
+		return floorCount;
 	}
 
 	//Base function: definition must not change, but add your code
 	public int getNumberOfPeopleInElevator(int elevator) {
 		
 		//dumb code, replace it!
-		switch(elevator) {
+		/*switch(elevator) {
 		case 1: return 1;
 		case 2: return 4;
 		default: return 2;
-		}
+		}*/
+		
+		return numberOfPeopleInElevator;
 	}
 	
+	public void decrementNumberOfPeopleInElevator(int elevator){
+		
+		try {
+			elecvatorCountMutex.acquire();
+				numberOfPeopleInElevator--;
+			elecvatorCountMutex.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+	}
+	
+	public void incrementNumberOfPeopleInElevator(int elevator){
+		
+		numberOfPeopleInElevator++;
+		
+	}
 	
 
 	//Base function: definition must not change, but add your code

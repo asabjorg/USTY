@@ -1,11 +1,17 @@
 	package com.ru.usty.elevator;
 
-public class Elevator implements Runnable {
+public class Elevator implements Runnable  {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		
+		
+		for(int i=0; i < 6; i++){
+			ElevatorScene.elevatorDoorInSemaphore.release(); //signal
+		}
 		
 	}
 
+	
+		
 }
