@@ -28,9 +28,8 @@ public class Person implements Runnable{
 			
 		
 			ElevatorScene.elevatorDoorOutSemaphore.acquire();
-			System.out.println("acquire");
 			
-	
+				
 			ElevatorScene.scene.decrementNumberOfPeopleInElevator(0);
 		
 			

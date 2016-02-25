@@ -113,16 +113,27 @@ public class ElevatorScene {
 	
 	public void decrementElevatorFloor(int elevator) {
 		
-		
-		floorCount -= 1;
+		try {
+			floorCountMutex.acquire();
+				floorCount -= 1;
+			floorCountMutex.release();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
 		
 	}
 	
 	public void incrementElevatorFloor(int elevator) {
-		
+		try {
+			floorCountMutex.acquire();
 				floorCount += 1;
-	
-			
+			floorCountMutex.release();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	//Base function: definition must not change, but add your code
@@ -140,15 +151,32 @@ public class ElevatorScene {
 	
 	public void decrementNumberOfPeopleInElevator(int elevator){
 		
-
+		try {
+			elecvatorCountMutex.acquire();
 				numberOfPeopleInElevator--;
+			elecvatorCountMutex.release();
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
 	
 			
 	}
 	
 	public void incrementNumberOfPeopleInElevator(int elevator){
 		
-		numberOfPeopleInElevator++;
+		try {
+			elecvatorCountMutex.acquire();
+				numberOfPeopleInElevator++;
+			elecvatorCountMutex.release();
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
 		
 	}
 	
