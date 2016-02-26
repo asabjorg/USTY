@@ -30,7 +30,7 @@ public class Elevator implements Runnable  {
 				
 				System.out.println(ElevatorScene.numberOfPeopleInElevator);
 				
-				for (int i = 0; i < 6 - ElevatorScene.numberOfPeopleInElevator -1;  i++){
+				for (int i = 0; i < 6 - ElevatorScene.numberOfPeopleInElevator;  i++){
 					try {
 						ElevatorScene.elevatorDoorInSemaphore.acquire();
 					} catch (InterruptedException e) {
