@@ -18,9 +18,34 @@ public class Elevator implements Runnable  {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		
-			ElevatorScene.scene.incrementElevatorFloor(1);
-		
+			
+			if(ElevatorScene.numberOfPeopleInElevator != 6){
+				
+				try {
+					ElevatorScene.elevatorWaitMutex.acquire();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				System.out.println(ElevatorScene.numberOfPeopleInElevator);
+				
+				for (int i = 0; i < 6 - ElevatorScene.numberOfPeopleInElevator -1;  i++){
+					try {
+						ElevatorScene.elevatorDoorInSemaphore.acquire();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+				ElevatorScene.elevatorWaitMutex.release();
+			
+			}
+			
+			ElevatorScene.scene.incrementElevatorFloor(0);
+			
+
 			try {
 				Thread.sleep(ElevatorScene.VISUALIZATION_WAIT_TIME);
 			} catch (InterruptedException e) {
@@ -28,11 +53,12 @@ public class Elevator implements Runnable  {
 				e.printStackTrace();
 			}
 			
+
 			for(int i=0; i < 6; i++){
 				ElevatorScene.elevatorDoorOutSemaphore.release(); //signal
 			}
 			
-			ElevatorScene.scene.decrementElevatorFloor(1);
+			ElevatorScene.scene.decrementElevatorFloor(0);
 			
 			try {
 				Thread.sleep(ElevatorScene.VISUALIZATION_WAIT_TIME);

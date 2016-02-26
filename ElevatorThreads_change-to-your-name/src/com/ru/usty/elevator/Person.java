@@ -17,8 +17,11 @@ public class Person implements Runnable{
 		
 		try {
 			
+			ElevatorScene.elevatorWaitMutex.acquire();
 			//wait for their turn to go into the elevator
-			ElevatorScene.elevatorDoorInSemaphore.acquire();
+				ElevatorScene.elevatorDoorInSemaphore.acquire();
+				System.out.println("aquire person");
+			ElevatorScene.elevatorWaitMutex.release();
 			
 			//I'm off the floor so I decrement the number 
 			ElevatorScene.scene.decrementNumberOfPeopleWaitingAtFloor(0);

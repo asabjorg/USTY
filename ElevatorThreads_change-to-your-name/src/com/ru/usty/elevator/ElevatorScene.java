@@ -21,7 +21,9 @@ public class ElevatorScene {
 	
 	public static Semaphore floorCountMutex;
 	
-	public static Semaphore elecvatorCountMutex;
+	public static Semaphore elevatorCountMutex;
+	
+	public static Semaphore elevatorWaitMutex;
 	
 	public static ElevatorScene scene; 
 	
@@ -51,8 +53,9 @@ public class ElevatorScene {
 		elevatorDoorInSemaphore = new Semaphore(0);
 		elevatorDoorOutSemaphore = new Semaphore(0);
 		personCountMutex = new Semaphore(1);
-		elecvatorCountMutex = new Semaphore(1);
+		elevatorCountMutex = new Semaphore(1);
 		floorCountMutex = new Semaphore(1); 
+		elevatorWaitMutex = new Semaphore(1); 
 	
 		
 		Thread thread = new Thread(new Elevator());
@@ -152,25 +155,22 @@ public class ElevatorScene {
 	public void decrementNumberOfPeopleInElevator(int elevator){
 		
 		try {
-			elecvatorCountMutex.acquire();
+			elevatorCountMutex.acquire();
 				numberOfPeopleInElevator--;
-			elecvatorCountMutex.release();
+			elevatorCountMutex.release();
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-				
-	
-			
 	}
 	
 	public void incrementNumberOfPeopleInElevator(int elevator){
 		
 		try {
-			elecvatorCountMutex.acquire();
+			elevatorCountMutex.acquire();
 				numberOfPeopleInElevator++;
-			elecvatorCountMutex.release();
+			elevatorCountMutex.release();
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
