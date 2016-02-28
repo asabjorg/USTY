@@ -25,16 +25,20 @@ public class ElevatorScene {
 	
 	public static Semaphore elevatorWaitMutex;
 	
+	public static Semaphore elevatorMaxMutex;
+	
 	public static ElevatorScene scene; 
 	
 	public static int floorCount = 0; 
 	
 	public static int numberOfPeopleInElevator = 0; 
+	
+	public static Semaphore elevatorWait2Mutex;
 
 	
 	//TO SPEED THINGS UP WHEN TESTING,
 	//feel free to change this.  It will be changed during grading
-	public static final int VISUALIZATION_WAIT_TIME = 500;  //milliseconds
+	public static final int VISUALIZATION_WAIT_TIME = 1500;  //milliseconds
 	
 	private int numberOfFloors;
 	private int numberOfElevators;
@@ -56,6 +60,8 @@ public class ElevatorScene {
 		elevatorCountMutex = new Semaphore(1);
 		floorCountMutex = new Semaphore(1); 
 		elevatorWaitMutex = new Semaphore(1); 
+		elevatorMaxMutex = new Semaphore(1);
+		elevatorWait2Mutex = new Semaphore(1);
 	
 		
 		Thread thread = new Thread(new Elevator());

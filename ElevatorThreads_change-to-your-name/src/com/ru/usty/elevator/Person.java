@@ -21,19 +21,21 @@ public class Person implements Runnable{
 			//wait for their turn to go into the elevator
 				ElevatorScene.elevatorDoorInSemaphore.acquire();
 				System.out.println("aquire person");
+
+				
 			ElevatorScene.elevatorWaitMutex.release();
 			
 			//I'm off the floor so I decrement the number 
 			ElevatorScene.scene.decrementNumberOfPeopleWaitingAtFloor(0);
+			System.out.println(ElevatorScene.scene.getNumberOfPeopleWaitingAtFloor(0));
 			
 			//I want to go out of the elevator
 			ElevatorScene.scene.incrementNumberOfPeopleInElevator(0);
+			System.out.println(ElevatorScene.numberOfPeopleInElevator);
 			
-		
 			ElevatorScene.elevatorDoorOutSemaphore.acquire();
-			
-				
-			ElevatorScene.scene.decrementNumberOfPeopleInElevator(0);
+				ElevatorScene.scene.decrementNumberOfPeopleInElevator(0);
+				//System.out.println(ElevatorScene.numberOfPeopleInElevator);
 		
 			
 			
