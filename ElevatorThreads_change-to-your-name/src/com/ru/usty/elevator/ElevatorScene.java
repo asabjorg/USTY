@@ -13,13 +13,13 @@ import java.util.concurrent.Semaphore;
 
 public class ElevatorScene {
 	
-	public static Semaphore elevatorDoorInSemaphore;
+	public static Semaphore[] elevatorDoorInSemaphore; //þurfum xx margar svona semphores
 	
-	public static Semaphore elevatorDoorOutSemaphore;
+	public static Semaphore[] elevatorDoorOutSemaphore; //þurfum xx margar svona semphores
 	
 	public static Semaphore personCountMutex;
 	
-	public static Semaphore floorCountMutex;
+	public static Semaphore floorCountMutex; 
 	
 	public static Semaphore elevatorCountMutex;
 	
@@ -36,7 +36,7 @@ public class ElevatorScene {
 	//feel free to change this.  It will be changed during grading
 	public static final int VISUALIZATION_WAIT_TIME = 500;  //milliseconds
 	
-	private int numberOfFloors;
+	public int numberOfFloors;
 	private int numberOfElevators;
 	
 
@@ -50,12 +50,33 @@ public class ElevatorScene {
 	public void restartScene(int numberOfFloors, int numberOfElevators) {
 
 		scene = this;
-		elevatorDoorInSemaphore = new Semaphore(0);
-		elevatorDoorOutSemaphore = new Semaphore(0);
+		
+		this.numberOfFloors = numberOfFloors;
+		this.numberOfElevators = numberOfElevators;
+		
+		personCount = new ArrayList<Integer>();
+		for(int i = 0; i < numberOfFloors; i++) {
+			this.personCount.add(0);
+		}
+		
+		//arrays of semephores
+		elevatorDoorInSemaphore = new Semaphore[numberOfFloors]; //create an array of semphores to go in 
+		elevatorDoorOutSemaphore = new Semaphore[numberOfFloors];//create an array of semphores to go out
+		
+		//Mutex
 		personCountMutex = new Semaphore(1);
 		elevatorCountMutex = new Semaphore(1);
 		floorCountMutex = new Semaphore(1); 
-		elevatorWaitMutex = new Semaphore(1); 
+		
+		for(int i = 0 ; i < numberOfFloors; i++){ //init the array for in sem. to 0
+			
+			elevatorDoorInSemaphore[i] = new Semaphore(0);
+		}
+		
+		for(int i = 0 ; i < numberOfFloors; i++){ //init the array for out to sem. to 0
+			
+			elevatorDoorOutSemaphore[i] = new Semaphore(0);
+		}
 	
 		
 		Thread thread = new Thread(new Elevator());
@@ -74,13 +95,6 @@ public class ElevatorScene {
 		 */
 
 		
-		this.numberOfFloors = numberOfFloors;
-		this.numberOfElevators = numberOfElevators;
-
-		personCount = new ArrayList<Integer>();
-		for(int i = 0; i < numberOfFloors; i++) {
-			this.personCount.add(0);
-		}
 	}
 
 	//Base function: definition must not change
@@ -88,7 +102,7 @@ public class ElevatorScene {
 	public Thread addPerson(int sourceFloor, int destinationFloor) {
 		
 		//create new thread for the person and start it. Make it run.
-		Thread thread = new Thread(new Person(0, 1));
+		Thread thread = new Thread(new Person(sourceFloor, destinationFloor));
 		
 		thread.start();
 		
@@ -125,7 +139,6 @@ public class ElevatorScene {
 			e.printStackTrace();
 		}
 			
-		
 	}
 	
 	public void incrementElevatorFloor(int elevator) {
@@ -141,13 +154,6 @@ public class ElevatorScene {
 
 	//Base function: definition must not change, but add your code
 	public int getNumberOfPeopleInElevator(int elevator) {
-		
-		//dumb code, replace it!
-		/*switch(elevator) {
-		case 1: return 1;
-		case 2: return 4;
-		default: return 2;
-		}*/
 		
 		return numberOfPeopleInElevator;
 	}
