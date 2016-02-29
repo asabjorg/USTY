@@ -7,20 +7,15 @@ public class Elevator implements Runnable  {
 	public void run() {
 		
 		while(true){
-			System.out.println("On floor: " + ElevatorScene.scene.floorCount);
-			System.out.println("Person in elevator before in: " + ElevatorScene.numberOfPeopleInElevator);
+			ElevatorScene.addPersonToWaitLine = true;
+			int tempNumberOfPeopleInElevator = (6 - ElevatorScene.numberOfPeopleInElevator);
 			
-			ElevatorScene.scene.addPersonToWaitLine = true;
-			int tempNumberOfPeopleInElevator = 6 - ElevatorScene.numberOfPeopleInElevator;
-			System.out.println("temp: " + tempNumberOfPeopleInElevator + "vs. numel: " + (6 - ElevatorScene.numberOfPeopleInElevator));
 			for(int i=0; i < tempNumberOfPeopleInElevator; i++){
 				ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.floorCount].release(); 
-				System.out.println("In door " + ElevatorScene.floorCount);
 			}
-			ElevatorScene.scene.addPersonToWaitLine = false;
 			
-			System.out.println("Person in elevator after in: " + ElevatorScene.numberOfPeopleInElevator);
-			
+			ElevatorScene.addPersonToWaitLine = false;
+					
 			try {
 				Thread.sleep(ElevatorScene.VISUALIZATION_WAIT_TIME);
 			} catch (InterruptedException e) {
@@ -46,8 +41,7 @@ public class Elevator implements Runnable  {
 				}
 				
 			}*/
-			
-			
+						
 			if(ElevatorScene.floorCount == (ElevatorScene.scene.numberOfFloors - 1)){
 				ElevatorScene.floorCount = 0; 	
 			}
@@ -61,19 +55,13 @@ public class Elevator implements Runnable  {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			System.out.println("On floor: " + ElevatorScene.scene.floorCount);
-			System.out.println("Person in elevator before out: " + ElevatorScene.numberOfPeopleInElevator);
-			
-			int tempNumberOfPeopleForDestFloor = ElevatorScene.scene.numberOfPeopleForDestFloor[ElevatorScene.floorCount];
+		
+			int tempNumberOfPeopleForDestFloor = ElevatorScene.numberOfPeopleForDestFloor[ElevatorScene.floorCount];
 			
 			for(int i=0; i < tempNumberOfPeopleForDestFloor; i++){
 				ElevatorScene.elevatorDoorOutSemaphore[ElevatorScene.floorCount].release(); //signal
-				System.out.println("Out door " +  ElevatorScene.floorCount);
 			}
 			
-			System.out.println("Person in elevator after out: " + ElevatorScene.numberOfPeopleInElevator);
-			System.out.println("-------------------------------------");
 			try {
 				Thread.sleep(ElevatorScene.VISUALIZATION_WAIT_TIME);
 			} catch (InterruptedException e) {
