@@ -17,7 +17,7 @@ public class Person implements Runnable{
 		
 		try {
 			
-			while(ElevatorScene.scene.addPersonToWaitLine){
+			while(ElevatorScene.scene.addPersonToWaitLine){}
 				//System.out.println(this.sourceFloor + " and " + this.destFloor);
 				
 				//wait for their turn to go into the elevator
@@ -40,7 +40,7 @@ public class Person implements Runnable{
 				
 				//Added for better visualization, code from teacher
 				ElevatorScene.scene.personExitsAtFloor(this.destFloor);
-			}
+			
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

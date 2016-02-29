@@ -84,7 +84,7 @@ public class ElevatorScene {
 		this.numberOfElevators = numberOfElevators;
 		
 		numberOfPeopleForDestFloor = new int[numberOfFloors];
-		addPersonToWaitLine = true;
+		addPersonToWaitLine = false;
 		
 		personCount = new ArrayList<Integer>();
 		for(int i = 0; i < numberOfFloors; i++) {

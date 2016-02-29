@@ -10,14 +10,14 @@ public class Elevator implements Runnable  {
 			System.out.println("On floor: " + ElevatorScene.scene.floorCount);
 			System.out.println("Person in elevator before in: " + ElevatorScene.numberOfPeopleInElevator);
 			
-			ElevatorScene.scene.addPersonToWaitLine = false;
+			ElevatorScene.scene.addPersonToWaitLine = true;
 			int tempNumberOfPeopleInElevator = 6 - ElevatorScene.numberOfPeopleInElevator;
-			
+			System.out.println("temp: " + tempNumberOfPeopleInElevator + "vs. numel: " + (6 - ElevatorScene.numberOfPeopleInElevator));
 			for(int i=0; i < tempNumberOfPeopleInElevator; i++){
 				ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.floorCount].release(); 
 				System.out.println("In door " + ElevatorScene.floorCount);
 			}
-			ElevatorScene.scene.addPersonToWaitLine = true;
+			ElevatorScene.scene.addPersonToWaitLine = false;
 			
 			System.out.println("Person in elevator after in: " + ElevatorScene.numberOfPeopleInElevator);
 			
