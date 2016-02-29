@@ -17,31 +17,30 @@ public class Person implements Runnable{
 		
 		try {
 			
+			while(ElevatorScene.scene.addPersonToWaitLine){
+				//System.out.println(this.sourceFloor + " and " + this.destFloor);
+				
+				//wait for their turn to go into the elevator
+				ElevatorScene.elevatorDoorInSemaphore[this.sourceFloor].acquire();
 			
-			//System.out.println(this.sourceFloor + " and " + this.destFloor);
-			
-			//wait for their turn to go into the elevator
-			ElevatorScene.elevatorDoorInSemaphore[this.sourceFloor].acquire();
-		
-			
-			//I'm off the floor so I decrement the number 
-			ElevatorScene.scene.decrementNumberOfPeopleWaitingAtFloor(this.sourceFloor);
-			
-			//I'm in. 
-			ElevatorScene.scene.incrementNumberOfPeopleInElevator(0);
-			ElevatorScene.scene.numberOfPeopleForDestFloor[this.destFloor] += 1;
-			
-			//I want to go out of the elevator
-			ElevatorScene.elevatorDoorOutSemaphore[this.destFloor].acquire();
-			
-			//I'm off
-			ElevatorScene.scene.decrementNumberOfPeopleInElevator(0);
-			ElevatorScene.scene.numberOfPeopleForDestFloor[this.destFloor] -= 1;
-			
-			//Added for better visualization, code from teacher
-			ElevatorScene.scene.personExitsAtFloor(this.destFloor);
-		
-			
+				
+				//I'm off the floor so I decrement the number 
+				ElevatorScene.scene.decrementNumberOfPeopleWaitingAtFloor(this.sourceFloor);
+				
+				//I'm in. 
+				ElevatorScene.scene.incrementNumberOfPeopleInElevator(0);
+				ElevatorScene.scene.numberOfPeopleForDestFloor[this.destFloor] += 1;
+				
+				//I want to go out of the elevator
+				ElevatorScene.elevatorDoorOutSemaphore[this.destFloor].acquire();
+				
+				//I'm off
+				ElevatorScene.scene.decrementNumberOfPeopleInElevator(0);
+				ElevatorScene.scene.numberOfPeopleForDestFloor[this.destFloor] -= 1;
+				
+				//Added for better visualization, code from teacher
+				ElevatorScene.scene.personExitsAtFloor(this.destFloor);
+			}
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

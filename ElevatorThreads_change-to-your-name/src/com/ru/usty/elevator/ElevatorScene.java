@@ -32,6 +32,8 @@ public class ElevatorScene {
 	public static int numberOfPeopleInElevator = 0; 
 	
 	public static int[] numberOfPeopleForDestFloor;
+	
+	public static boolean addPersonToWaitLine;
 
 	
 	//TO SPEED THINGS UP WHEN TESTING,
@@ -82,6 +84,7 @@ public class ElevatorScene {
 		this.numberOfElevators = numberOfElevators;
 		
 		numberOfPeopleForDestFloor = new int[numberOfFloors];
+		addPersonToWaitLine = true;
 		
 		personCount = new ArrayList<Integer>();
 		for(int i = 0; i < numberOfFloors; i++) {
@@ -91,6 +94,7 @@ public class ElevatorScene {
 		//arrays of semephores
 		elevatorDoorInSemaphore = new Semaphore[numberOfFloors]; //create an array of semphores to go in 
 		elevatorDoorOutSemaphore = new Semaphore[numberOfFloors];//create an array of semphores to go out
+		
 		
 		//Mutex
 		personCountMutex = new Semaphore(1);
