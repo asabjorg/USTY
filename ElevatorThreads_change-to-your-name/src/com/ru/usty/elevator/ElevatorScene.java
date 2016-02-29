@@ -44,6 +44,31 @@ public class ElevatorScene {
 									//throw away and
 									//implement differently
 									//if it suits you
+	//Added for better visualization (from teacher)
+	ArrayList<Integer> exitedCount = null;
+	public static Semaphore exitedCountMutex;
+
+	public void personExitsAtFloor(int floor) {
+		try {
+			
+			exitedCountMutex.acquire();
+			exitedCount.set(floor, (exitedCount.get(floor) + 1));
+			exitedCountMutex.release();
+
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public int getExitedCountAtFloor(int floor) {
+		if(floor < getNumberOfFloors()) {
+			return exitedCount.get(floor);
+		}
+		else {
+			return 0;
+		}
+	} //End of added code from teacher
 
 	//Base function: definition must not change
 	//Necessary to add your code in this one
@@ -93,7 +118,18 @@ public class ElevatorScene {
 		 * If you can, tell any currently running
 		 * elevator threads to stop
 		 */
-
+		//Code added from teacher for better visualization
+		if(exitedCount == null) {
+			exitedCount = new ArrayList<Integer>();
+		}
+		else {
+			exitedCount.clear();
+		}
+		for(int i = 0; i < getNumberOfFloors(); i++) {
+			this.exitedCount.add(0);
+		}
+		exitedCountMutex = new Semaphore(1);
+		//End of added code
 		
 	}
 
