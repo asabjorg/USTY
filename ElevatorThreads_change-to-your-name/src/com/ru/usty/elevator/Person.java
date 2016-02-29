@@ -35,6 +35,9 @@ public class Person implements Runnable{
 			
 			//I'm off
 			ElevatorScene.scene.decrementNumberOfPeopleInElevator(0);
+			
+			//Added for better visualization, code from teacher
+			ElevatorScene.scene.personExitsAtFloor(this.destFloor);
 		
 			
 			
