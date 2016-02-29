@@ -13,6 +13,7 @@ public class Elevator implements Runnable  {
 			for(int i=0; i < 6 - ElevatorScene.numberOfPeopleInElevator; i++){
 				
 				ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.floorCount].release(); 
+				System.out.println("In door " + ElevatorScene.floorCount);
 			}
 			
 			try {
@@ -61,7 +62,7 @@ public class Elevator implements Runnable  {
 			System.out.println("before release floor " +  ElevatorScene.floorCount);
 			
 
-			for(int i=0; i < 6; i++){
+			for(int i=0; i < ElevatorScene.scene.numberOfPeopleForDestFloor[ElevatorScene.floorCount]; i++){
 				ElevatorScene.elevatorDoorOutSemaphore[ElevatorScene.floorCount].release(); //signal
 				System.out.println("release floor " +  ElevatorScene.floorCount);
 			}

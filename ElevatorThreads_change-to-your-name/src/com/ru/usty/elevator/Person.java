@@ -29,12 +29,14 @@ public class Person implements Runnable{
 			
 			//I'm in. 
 			ElevatorScene.scene.incrementNumberOfPeopleInElevator(0);
+			ElevatorScene.scene.numberOfPeopleForDestFloor[this.destFloor] += 1;
 			
 			//I want to go out of the elevator
 			ElevatorScene.elevatorDoorOutSemaphore[this.destFloor].acquire();
 			
 			//I'm off
 			ElevatorScene.scene.decrementNumberOfPeopleInElevator(0);
+			ElevatorScene.scene.numberOfPeopleForDestFloor[this.destFloor] -= 1;
 			
 			//Added for better visualization, code from teacher
 			ElevatorScene.scene.personExitsAtFloor(this.destFloor);

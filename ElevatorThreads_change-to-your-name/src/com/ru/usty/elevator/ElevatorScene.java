@@ -30,11 +30,13 @@ public class ElevatorScene {
 	public static int floorCount = 0; 
 	
 	public static int numberOfPeopleInElevator = 0; 
+	
+	public static int[] numberOfPeopleForDestFloor;
 
 	
 	//TO SPEED THINGS UP WHEN TESTING,
 	//feel free to change this.  It will be changed during grading
-	public static final int VISUALIZATION_WAIT_TIME = 500;  //milliseconds
+	public static final int VISUALIZATION_WAIT_TIME = 2000;  //milliseconds
 	
 	public int numberOfFloors;
 	private int numberOfElevators;
@@ -78,6 +80,8 @@ public class ElevatorScene {
 		
 		this.numberOfFloors = numberOfFloors;
 		this.numberOfElevators = numberOfElevators;
+		
+		numberOfPeopleForDestFloor = new int[numberOfFloors];
 		
 		personCount = new ArrayList<Integer>();
 		for(int i = 0; i < numberOfFloors; i++) {
