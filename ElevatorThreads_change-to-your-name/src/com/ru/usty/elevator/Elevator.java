@@ -7,7 +7,10 @@ public class Elevator implements Runnable  {
 	public void run() {
 		
 		while(true){
-			
+			//If this is true, return to ElevatorScene
+			if(ElevatorScene.elevatorsMayDie){
+				return;
+			}
 			
 			//not sure if we need this temp variable - Ása
 			int tempNumberOfPeopleInElevator = (6 - ElevatorScene.numberOfPeopleInElevator);

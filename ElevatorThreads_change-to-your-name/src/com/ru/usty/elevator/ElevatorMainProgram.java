@@ -13,14 +13,14 @@ public class ElevatorMainProgram {
 
 			Thread.sleep(1000);
 
-			TestSuite.runTest(1);
+			/*TestSuite.runTest(3);
 
-			Thread.sleep(2000);
+			Thread.sleep(2000);*/
 
-		//	for(int i = 0; i <= 4; i++) {
-		//		TestSuite.runTest(i);
-		//		Thread.sleep(2000);
-		//	}
+			for(int i = 0; i <= 4; i++) {
+				TestSuite.runTest(i);
+				Thread.sleep(2000);
+			}
 
 /*************************************************************/
 
