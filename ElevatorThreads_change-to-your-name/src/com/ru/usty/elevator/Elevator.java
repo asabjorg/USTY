@@ -36,15 +36,17 @@ public class Elevator implements Runnable  {
 				}
 			}
 			
-			ElevatorScene.addPersonToWaitLine = true;
-			
-						
 			if(ElevatorScene.floorCount == (ElevatorScene.scene.numberOfFloors - 1)){
 				ElevatorScene.floorCount = 0; 	
 			}
 			else{	
 				ElevatorScene.scene.incrementElevatorFloor(0);
 			}
+			
+			ElevatorScene.addPersonToWaitLine = true;
+			
+						
+			
 			
 			try {
 				Thread.sleep(ElevatorScene.VISUALIZATION_WAIT_TIME);
@@ -54,9 +56,9 @@ public class Elevator implements Runnable  {
 			}
 		
 			//við þurfum ekki þessa temp breytu held ég en mér gæti skjátlast, þetta virðsit virka eins án hennar
-			//int tempNumberOfPeopleForDestFloor = ElevatorScene.numberOfPeopleForDestFloor[ElevatorScene.floorCount];
+			int tempNumberOfPeopleForDestFloor = ElevatorScene.numberOfPeopleForDestFloor[ElevatorScene.floorCount];
 			
-			for(int i=0; i < ElevatorScene.numberOfPeopleForDestFloor[ElevatorScene.floorCount]; i++){
+			for(int i=0; i < tempNumberOfPeopleForDestFloor; i++){
 				ElevatorScene.elevatorDoorOutSemaphore[ElevatorScene.floorCount].release(); //signal
 			}
 			
