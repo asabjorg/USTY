@@ -34,6 +34,10 @@ public class ElevatorScene {
 	public static int[] numberOfPeopleForDestFloor;
 	
 	public static boolean addPersonToWaitLine;
+	
+	public static boolean elevatorsMayDie;
+	
+	private Thread elevatorThread = null;
 
 	
 	//TO SPEED THINGS UP WHEN TESTING,
@@ -48,6 +52,7 @@ public class ElevatorScene {
 									//throw away and
 									//implement differently
 									//if it suits you
+	
 	//Added for better visualization (from teacher)
 	ArrayList<Integer> exitedCount = null;
 	public static Semaphore exitedCountMutex;
@@ -77,7 +82,33 @@ public class ElevatorScene {
 	//Base function: definition must not change
 	//Necessary to add your code in this one
 	public void restartScene(int numberOfFloors, int numberOfElevators) {
-
+	
+		//In the beginning of a scene we will kill off all elevatorThreads that are alive.
+		elevatorsMayDie = true;
+		
+		if(elevatorThread != null){
+			if(elevatorThread.isAlive()){
+				try {
+					elevatorThread.join();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		/*Code for when we have more than one elevator thread
+		 * for(Thread tread : elevatorThreads)
+		{
+			if(thread != null)
+			{
+				if(thread.isAlive())
+				{
+					thread.join();
+				}
+			}
+		}*/
+		elevatorsMayDie = false;	
+		
 		scene = this;
 		
 		this.numberOfFloors = numberOfFloors;
@@ -112,9 +143,13 @@ public class ElevatorScene {
 			elevatorDoorOutSemaphore[i] = new Semaphore(0);
 		}
 	
-		
-		Thread thread = new Thread(new Elevator());
-		thread.start();
+		//Add an elevator thread and start it
+		elevatorThread = new Thread(new Elevator());
+		/*This is for when we have more than one elevator thread
+		*ArrayList<Thread> elevatorThreads = new ArrayList<Thread>();
+		*elevatorThreads.add(elevatorThread);
+		*/
+		elevatorThread.start();
 		
 		
 		/**
