@@ -7,21 +7,37 @@ public class Elevator implements Runnable  {
 	public void run() {
 		
 		while(true){
-			ElevatorScene.addPersonToWaitLine = true;
-			int tempNumberOfPeopleInElevator = (6 - ElevatorScene.numberOfPeopleInElevator);
 			
-			for(int i=0; i < tempNumberOfPeopleInElevator; i++){
+			
+			for(int i=0; i < 6 - ElevatorScene.numberOfPeopleInElevator; i++){
 				ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.floorCount].release(); 
 			}
 			
-			ElevatorScene.addPersonToWaitLine = false;
-					
 			try {
 				Thread.sleep(ElevatorScene.VISUALIZATION_WAIT_TIME);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			
+			ElevatorScene.addPersonToWaitLine = false;
+			
+			if(ElevatorScene.scene.getNumberOfPeopleWaitingAtFloor(ElevatorScene.floorCount) == 0){
+				
+				for(int i = 0 ; i < (6 - ElevatorScene.numberOfPeopleInElevator); i++){
+					
+					try {
+						ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.floorCount].acquire();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+					
+				}
+			}
+			
+			ElevatorScene.addPersonToWaitLine = true;
 			
 						
 			if(ElevatorScene.floorCount == (ElevatorScene.scene.numberOfFloors - 1)){

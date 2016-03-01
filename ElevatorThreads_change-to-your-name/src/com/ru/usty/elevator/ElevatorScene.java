@@ -256,11 +256,7 @@ public class ElevatorScene {
 			e.printStackTrace();
 		}
 			
-		
 	}
-	
-	
-	
 
 	//Base function: definition must not change, but add your code
 	public int getNumberOfPeopleWaitingAtFloor(int floor) {
