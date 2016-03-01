@@ -8,7 +8,11 @@ public class Elevator implements Runnable  {
 		
 		while(true){
 			
-			for(int i=0; i < 6 - ElevatorScene.numberOfPeopleInElevator; i++){
+			
+			//not sure if we need this temp variable - Ása
+			int tempNumberOfPeopleInElevator = (6 - ElevatorScene.numberOfPeopleInElevator);
+			
+			for(int i=0; i < tempNumberOfPeopleInElevator; i++){
 				ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.floorCount].release(); 
 			}
 			
@@ -19,32 +23,33 @@ public class Elevator implements Runnable  {
 				e.printStackTrace();
 			}
 			
-			
+			//goes in to the critical section
 			ElevatorScene.addPersonToWaitLine = false;
 			
-			if(ElevatorScene.scene.getNumberOfPeopleWaitingAtFloor(ElevatorScene.floorCount) == 0){
+			//taking back release with acquire if the elevator is leaving with empty spaces. 
+			for(int i = 0 ; i < (6 - ElevatorScene.numberOfPeopleInElevator); i++){
 				
-				for(int i = 0 ; i < (6 - ElevatorScene.numberOfPeopleInElevator); i++){
-					
-					try {
-						ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.floorCount].acquire();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} 
-					
-				}
+				try {
+					ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.floorCount].acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+				
 			}
 			
-			ElevatorScene.addPersonToWaitLine = true;
-			
-						
 			if(ElevatorScene.floorCount == (ElevatorScene.scene.numberOfFloors - 1)){
 				ElevatorScene.floorCount = 0; 	
 			}
 			else{	
 				ElevatorScene.scene.incrementElevatorFloor(0);
 			}
+			
+			//leaves the critical section
+			ElevatorScene.addPersonToWaitLine = true;
+			
+						
+			
 			
 			try {
 				Thread.sleep(ElevatorScene.VISUALIZATION_WAIT_TIME);
@@ -54,9 +59,9 @@ public class Elevator implements Runnable  {
 			}
 		
 			//við þurfum ekki þessa temp breytu held ég en mér gæti skjátlast, þetta virðsit virka eins án hennar
-			//int tempNumberOfPeopleForDestFloor = ElevatorScene.numberOfPeopleForDestFloor[ElevatorScene.floorCount];
+			int tempNumberOfPeopleForDestFloor = ElevatorScene.numberOfPeopleForDestFloor[ElevatorScene.floorCount];
 			
-			for(int i=0; i < ElevatorScene.numberOfPeopleForDestFloor[ElevatorScene.floorCount]; i++){
+			for(int i=0; i < tempNumberOfPeopleForDestFloor; i++){
 				ElevatorScene.elevatorDoorOutSemaphore[ElevatorScene.floorCount].release(); //signal
 			}
 			
