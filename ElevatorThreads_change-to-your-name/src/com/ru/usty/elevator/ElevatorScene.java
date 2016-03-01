@@ -23,7 +23,7 @@ public class ElevatorScene {
 	
 	public static Semaphore elevatorCountMutex;
 	
-	public static Semaphore elevatorWaitMutex;
+	public static Semaphore countOutMutex;
 	
 	public static ElevatorScene scene; 
 	
@@ -38,7 +38,7 @@ public class ElevatorScene {
 	
 	//TO SPEED THINGS UP WHEN TESTING,
 	//feel free to change this.  It will be changed during grading
-	public static final int VISUALIZATION_WAIT_TIME = 1000;  //milliseconds
+	public static final int VISUALIZATION_WAIT_TIME = 750;  //milliseconds
 	
 	public int numberOfFloors;
 	private int numberOfElevators;
@@ -100,6 +100,7 @@ public class ElevatorScene {
 		personCountMutex = new Semaphore(1);
 		elevatorCountMutex = new Semaphore(1);
 		floorCountMutex = new Semaphore(1); 
+		countOutMutex = new Semaphore(1);
 		
 		for(int i = 0 ; i < numberOfFloors; i++){ //init the array for in sem. to 0
 			
@@ -215,6 +216,34 @@ public class ElevatorScene {
 		}
 	}
 	
+	public void incrementNumberOfPeopleForDestFloor(int floor){
+		
+		try {
+			countOutMutex.acquire();
+				ElevatorScene.numberOfPeopleForDestFloor[floor] += 1;
+				countOutMutex.release();
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void decrementNumberOfPeopleForDestFloor(int floor){
+		
+		try {
+			countOutMutex.acquire();
+				ElevatorScene.numberOfPeopleForDestFloor[floor] -= 1;
+				countOutMutex.release();
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		
+	}
+	
 	public void incrementNumberOfPeopleInElevator(int elevator){
 		
 		try {
@@ -229,6 +258,8 @@ public class ElevatorScene {
 			
 		
 	}
+	
+	
 	
 
 	//Base function: definition must not change, but add your code

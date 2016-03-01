@@ -17,7 +17,7 @@ public class Person implements Runnable{
 		
 		try {
 			
-			while(ElevatorScene.scene.addPersonToWaitLine){}
+			while(ElevatorScene.addPersonToWaitLine){}
 				//System.out.println(this.sourceFloor + " and " + this.destFloor);
 				
 				//wait for their turn to go into the elevator
@@ -29,14 +29,14 @@ public class Person implements Runnable{
 				
 				//I'm in. 
 				ElevatorScene.scene.incrementNumberOfPeopleInElevator(0);
-				ElevatorScene.scene.numberOfPeopleForDestFloor[this.destFloor] += 1;
+				ElevatorScene.scene.incrementNumberOfPeopleForDestFloor(this.destFloor);
 				
 				//I want to go out of the elevator
 				ElevatorScene.elevatorDoorOutSemaphore[this.destFloor].acquire();
 				
 				//I'm off
 				ElevatorScene.scene.decrementNumberOfPeopleInElevator(0);
-				ElevatorScene.scene.numberOfPeopleForDestFloor[this.destFloor] -= 1;
+				ElevatorScene.scene.decrementNumberOfPeopleForDestFloor(this.destFloor);
 				
 				//Added for better visualization, code from teacher
 				ElevatorScene.scene.personExitsAtFloor(this.destFloor);
