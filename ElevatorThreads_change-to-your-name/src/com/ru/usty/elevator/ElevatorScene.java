@@ -38,7 +38,7 @@ public class ElevatorScene {
 	
 	//TO SPEED THINGS UP WHEN TESTING,
 	//feel free to change this.  It will be changed during grading
-	public static final int VISUALIZATION_WAIT_TIME = 750;  //milliseconds
+	public static final int VISUALIZATION_WAIT_TIME = 500;  //milliseconds
 	
 	public int numberOfFloors;
 	private int numberOfElevators;
@@ -84,7 +84,7 @@ public class ElevatorScene {
 		this.numberOfElevators = numberOfElevators;
 		
 		numberOfPeopleForDestFloor = new int[numberOfFloors];
-		addPersonToWaitLine = false;
+		addPersonToWaitLine = true;
 		
 		personCount = new ArrayList<Integer>();
 		for(int i = 0; i < numberOfFloors; i++) {
@@ -256,11 +256,7 @@ public class ElevatorScene {
 			e.printStackTrace();
 		}
 			
-		
 	}
-	
-	
-	
 
 	//Base function: definition must not change, but add your code
 	public int getNumberOfPeopleWaitingAtFloor(int floor) {
