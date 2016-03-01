@@ -20,10 +20,12 @@ public class Elevator implements Runnable  {
 			}
 			
 			//not sure if we need this temp variable - Ása
-			int tempNumberOfPeopleInElevator = (6 - ElevatorScene.numberOfPeopleInElevator);
+			//since numberOfPeopleInElevator changes during the execution of the loop
+			//this int temp is necessary - Petra
+			int tempNumberOfPeopleInElevator = (6 - ElevatorScene.scene.getNumberOfPeopleInElevator(this.elevatorNumber));;
 			
 			for(int i=0; i < tempNumberOfPeopleInElevator; i++){
-				ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.floorCount].release(); 
+				ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.scene.getCurrentFloorForElevator(this.elevatorNumber)].release(); 
 			}
 			
 			try {
@@ -37,10 +39,10 @@ public class Elevator implements Runnable  {
 			ElevatorScene.addPersonToWaitLine = false;
 			
 			//taking back release with acquire if the elevator is leaving with empty spaces. 
-			for(int i = 0 ; i < (6 - ElevatorScene.numberOfPeopleInElevator); i++){
+			for(int i = 0 ; i < (6 - ElevatorScene.scene.getNumberOfPeopleInElevator(this.elevatorNumber)); i++){
 				
 				try {
-					ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.floorCount].acquire();
+					ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.scene.getCurrentFloorForElevator(this.elevatorNumber)].acquire();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -48,11 +50,11 @@ public class Elevator implements Runnable  {
 				
 			}
 			
-			if(ElevatorScene.floorCount == (ElevatorScene.scene.numberOfFloors - 1)){
-				ElevatorScene.floorCount = 0; 	
+			if(ElevatorScene.scene.getCurrentFloorForElevator(this.elevatorNumber) == (ElevatorScene.scene.getNumberOfFloors() - 1)){
+				ElevatorScene.scene.floorCount[this.elevatorNumber] = 0; 	
 			}
 			else{	
-				ElevatorScene.scene.incrementElevatorFloor(0);
+				ElevatorScene.scene.incrementElevatorFloor(this.elevatorNumber);
 			}
 			
 			//leaves the critical section
@@ -69,10 +71,12 @@ public class Elevator implements Runnable  {
 			}
 		
 			//við þurfum ekki þessa temp breytu held ég en mér gæti skjátlast, þetta virðsit virka eins án hennar
-			int tempNumberOfPeopleForDestFloor = ElevatorScene.numberOfPeopleForDestFloor[ElevatorScene.floorCount];
-			
+			//since numberOfPeopleInElevator changes during the execution of the loop
+			//this int temp is necessary - Petra
+			int tempNumberOfPeopleForDestFloor = ElevatorScene.scene.getNumberOfPeopleForDestFloor(this.elevatorNumber);
+					
 			for(int i=0; i < tempNumberOfPeopleForDestFloor; i++){
-				ElevatorScene.elevatorDoorOutSemaphore[ElevatorScene.floorCount].release(); //signal
+				ElevatorScene.elevatorDoorOutSemaphore[ElevatorScene.scene.getCurrentFloorForElevator(this.elevatorNumber)].release(); //signal
 			}
 			
 			try {

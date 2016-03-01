@@ -27,9 +27,9 @@ public class ElevatorScene {
 
 	public static ElevatorScene scene; 
 
-	public static int floorCount = 0; 
+	public static int[] floorCount; 
 
-	public static int numberOfPeopleInElevator = 0; 
+	public static int[] numberOfPeopleInElevator; 
 
 	public static int[] numberOfPeopleForDestFloor;
 
@@ -124,6 +124,8 @@ public class ElevatorScene {
 		this.numberOfElevators = numberOfElevators;
 
 		numberOfPeopleForDestFloor = new int[numberOfFloors];
+		numberOfPeopleInElevator = new int[numberOfElevators];
+		floorCount = new int[numberOfElevators];
 		addPersonToWaitLine = true;
 
 		personCount = new ArrayList<Integer>();
@@ -168,6 +170,8 @@ public class ElevatorScene {
 			elevatorThread = new Thread(new Elevator(i));
 			elevatorThreads.add(elevatorThread);
 			elevatorThread.start();
+			numberOfPeopleInElevator[i] = 0;
+			floorCount[i] = 0;
 		}
 
 
@@ -223,15 +227,14 @@ public class ElevatorScene {
 
 	//Base function: definition must not change, but add your code
 	public int getCurrentFloorForElevator(int elevator) {
-
-		return floorCount;
+		return floorCount[elevator];
 	}
 
 	public void decrementElevatorFloor(int elevator) {
 
 		try {
 			floorCountMutex.acquire();
-			floorCount -= 1;
+			floorCount[elevator] -= 1;
 			floorCountMutex.release();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -243,7 +246,7 @@ public class ElevatorScene {
 	public void incrementElevatorFloor(int elevator) {
 		try {
 			floorCountMutex.acquire();
-			floorCount += 1;
+			floorCount[elevator] += 1;
 			floorCountMutex.release();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -254,20 +257,39 @@ public class ElevatorScene {
 	//Base function: definition must not change, but add your code
 	public int getNumberOfPeopleInElevator(int elevator) {
 
-		return numberOfPeopleInElevator;
+		return numberOfPeopleInElevator[elevator];
 	}
 
 	public void decrementNumberOfPeopleInElevator(int elevator){
 
 		try {
 			elevatorCountMutex.acquire();
-			numberOfPeopleInElevator--;
+			numberOfPeopleInElevator[elevator] -= 1;
 			elevatorCountMutex.release();
 
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void incrementNumberOfPeopleInElevator(int elevator){
+
+		try {
+			elevatorCountMutex.acquire();
+			numberOfPeopleInElevator[elevator] +=1;
+			elevatorCountMutex.release();
+
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	//Get the number of people for the destination floor for a specific elevator
+	public int getNumberOfPeopleForDestFloor(int floor){
+		return ElevatorScene.numberOfPeopleForDestFloor[floor];
 	}
 
 	public void incrementNumberOfPeopleForDestFloor(int floor){
@@ -298,19 +320,6 @@ public class ElevatorScene {
 
 	}
 
-	public void incrementNumberOfPeopleInElevator(int elevator){
-
-		try {
-			elevatorCountMutex.acquire();
-			numberOfPeopleInElevator++;
-			elevatorCountMutex.release();
-
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
 
 	//Base function: definition must not change, but add your code
 	public int getNumberOfPeopleWaitingAtFloor(int floor) {
