@@ -23,24 +23,6 @@ public class Elevator implements Runnable  {
 				e.printStackTrace();
 			}
 			
-			
-			/*if(ElevatorScene.numberOfPeopleInElevator < 6){
-				
-				for (int i = 0; i < 6 - ElevatorScene.numberOfPeopleInElevator;  i++){
-					
-					if(ElevatorScene.floorCount != 0){
-						try {
-							
-							ElevatorScene.elevatorDoorInSemaphore.acquire();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-					
-				}
-				
-			}*/
 						
 			if(ElevatorScene.floorCount == (ElevatorScene.scene.numberOfFloors - 1)){
 				ElevatorScene.floorCount = 0; 	
