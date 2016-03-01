@@ -1,6 +1,13 @@
 package com.ru.usty.elevator;
 
 public class Elevator implements Runnable  {
+	
+	int elevatorNumber;
+	
+	//Constructor to take in the number of the elevator, not needed with only one elevator in scene
+	public Elevator(int elevatorNumber){
+		this.elevatorNumber = elevatorNumber;
+	}
 
 	
 	@Override

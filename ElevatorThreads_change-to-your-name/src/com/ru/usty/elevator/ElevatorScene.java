@@ -46,6 +46,7 @@ public class ElevatorScene {
 	
 	public int numberOfFloors;
 	private int numberOfElevators;
+	ArrayList<Thread> elevatorThreads;
 	
 
 	ArrayList<Integer> personCount; //use if you want but
@@ -86,7 +87,8 @@ public class ElevatorScene {
 		//In the beginning of a scene we will kill off all elevatorThreads that are alive.
 		elevatorsMayDie = true;
 		
-		if(elevatorThread != null){
+		//Code for when we only have one elevator thread
+		/*if(elevatorThread != null){
 			if(elevatorThread.isAlive()){
 				try {
 					elevatorThread.join();
@@ -95,18 +97,25 @@ public class ElevatorScene {
 					e.printStackTrace();
 				}
 			}
-		}
-		/*Code for when we have more than one elevator thread
-		 * for(Thread tread : elevatorThreads)
+		}*/
+		/*Code for when we have more than one elevator thread, to kill of the threads in the system before starting new ones*/
+		if(elevatorThreads != null){
+		for(Thread elethread : elevatorThreads)
 		{
-			if(thread != null)
+			if(elethread != null)
 			{
-				if(thread.isAlive())
+				if(elethread.isAlive())
 				{
-					thread.join();
+					try {
+						elethread.join();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
-		}*/
+		}
+		}
 		elevatorsMayDie = false;	
 		
 		scene = this;
@@ -143,13 +152,23 @@ public class ElevatorScene {
 			elevatorDoorOutSemaphore[i] = new Semaphore(0);
 		}
 	
-		//Add an elevator thread and start it
-		elevatorThread = new Thread(new Elevator());
+		/* This works for one elevator
+		 * //Add an elevator thread and start it
+		 *
+		elevatorThread = new Thread(new Elevator(0));
 		/*This is for when we have more than one elevator thread
 		*ArrayList<Thread> elevatorThreads = new ArrayList<Thread>();
 		*elevatorThreads.add(elevatorThread);
-		*/
-		elevatorThread.start();
+		
+		elevatorThread.start();*/
+		
+		//This is code for when we want to make more than one elevator thread
+		elevatorThreads = new ArrayList<Thread>();
+		for(int i = 0; i < numberOfElevators; i++){
+			elevatorThread = new Thread(new Elevator(i));
+			elevatorThreads.add(elevatorThread);
+			elevatorThread.start();
+		}
 		
 		
 		/**
