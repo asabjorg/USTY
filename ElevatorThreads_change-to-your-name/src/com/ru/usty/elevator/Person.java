@@ -17,7 +17,7 @@ public class Person implements Runnable{
 		
 		try {
 			
-			while(ElevatorScene.addPersonToWaitLine){}
+			while(!ElevatorScene.addPersonToWaitLine){}
 				//System.out.println(this.sourceFloor + " and " + this.destFloor);
 				
 				//wait for their turn to go into the elevator

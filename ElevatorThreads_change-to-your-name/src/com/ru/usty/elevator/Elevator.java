@@ -8,7 +8,6 @@ public class Elevator implements Runnable  {
 		
 		while(true){
 			
-			
 			for(int i=0; i < 6 - ElevatorScene.numberOfPeopleInElevator; i++){
 				ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.floorCount].release(); 
 			}
@@ -54,9 +53,10 @@ public class Elevator implements Runnable  {
 				e.printStackTrace();
 			}
 		
-			int tempNumberOfPeopleForDestFloor = ElevatorScene.numberOfPeopleForDestFloor[ElevatorScene.floorCount];
+			//við þurfum ekki þessa temp breytu held ég en mér gæti skjátlast, þetta virðsit virka eins án hennar
+			//int tempNumberOfPeopleForDestFloor = ElevatorScene.numberOfPeopleForDestFloor[ElevatorScene.floorCount];
 			
-			for(int i=0; i < tempNumberOfPeopleForDestFloor; i++){
+			for(int i=0; i < ElevatorScene.numberOfPeopleForDestFloor[ElevatorScene.floorCount]; i++){
 				ElevatorScene.elevatorDoorOutSemaphore[ElevatorScene.floorCount].release(); //signal
 			}
 			
