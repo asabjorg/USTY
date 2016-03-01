@@ -8,6 +8,8 @@ public class Elevator implements Runnable  {
 		
 		while(true){
 			
+			
+			//not sure if we need this temp variable - Ása
 			int tempNumberOfPeopleInElevator = (6 - ElevatorScene.numberOfPeopleInElevator);
 			
 			for(int i=0; i < tempNumberOfPeopleInElevator; i++){
@@ -21,15 +23,14 @@ public class Elevator implements Runnable  {
 				e.printStackTrace();
 			}
 			
-			
+			//goes in to the critical section
 			ElevatorScene.addPersonToWaitLine = false;
 			
-			
+			//taking back release with acquire if the elevator is leaving with empty spaces. 
 			for(int i = 0 ; i < (6 - ElevatorScene.numberOfPeopleInElevator); i++){
 				
 				try {
 					ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.floorCount].acquire();
-					System.out.println("acquire back");
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -44,6 +45,7 @@ public class Elevator implements Runnable  {
 				ElevatorScene.scene.incrementElevatorFloor(0);
 			}
 			
+			//leaves the critical section
 			ElevatorScene.addPersonToWaitLine = true;
 			
 						
