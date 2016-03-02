@@ -42,10 +42,16 @@ public class Elevator implements Runnable  {
 			}
 			
 			if(ElevatorScene.floorCount == (ElevatorScene.scene.numberOfFloors - 1)){
-				ElevatorScene.floorCount = 0; 	
+				ElevatorScene.elevatorMove = false;
+				 	
+			} else if (ElevatorScene.floorCount == 0){
+				ElevatorScene.elevatorMove = true;
 			}
-			else{	
+			
+			if(ElevatorScene.elevatorMove){	
 				ElevatorScene.scene.incrementElevatorFloor(0);
+			} else{
+				ElevatorScene.scene.decrementElevatorFloor(0);
 			}
 			
 			//leaves the critical section

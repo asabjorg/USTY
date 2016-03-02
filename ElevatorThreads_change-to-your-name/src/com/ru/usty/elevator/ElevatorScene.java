@@ -37,6 +37,8 @@ public class ElevatorScene {
 	
 	public static boolean elevatorsMayDie;
 	
+	public static boolean elevatorMove;
+	
 	private Thread elevatorThread = null;
 
 	
@@ -108,6 +110,7 @@ public class ElevatorScene {
 			}
 		}*/
 		elevatorsMayDie = false;	
+		elevatorMove = true;
 		
 		scene = this;
 		

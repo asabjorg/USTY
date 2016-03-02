@@ -20,12 +20,12 @@ public class Person implements Runnable{
 			
 			//checking if thread safety is on by making the thread sleep when the arrive first so 
 			//there will be no line when the first elevator leaves - Ása
-			try {
+			/*try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 			//making them wait if elevator is in critical section - Ása
 			while(!ElevatorScene.addPersonToWaitLine){} 
 				//System.out.println(this.sourceFloor + " and " + this.destFloor);
