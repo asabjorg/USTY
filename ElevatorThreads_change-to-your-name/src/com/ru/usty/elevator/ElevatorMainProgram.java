@@ -8,23 +8,19 @@ public class ElevatorMainProgram {
 		try {
 
 			TestSuite.startVisualization();
-
-/***EXPERIMENT HERE BUT THIS WILL BE CHANGED DURING GRADING***/
-
 			Thread.sleep(1000);
-
+			
+			//Runs one test
 			/*TestSuite.runTest(9);
-
 			Thread.sleep(2000);*/
 
+			//Runs all test
 			for(int i = 0; i <= 4; i++) {
 				TestSuite.runTest(i);
 				Thread.sleep(2000);
 			}
-
-/*************************************************************/
-
 		} catch (InterruptedException e) {
+			
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

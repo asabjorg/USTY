@@ -4,6 +4,7 @@ public class Person implements Runnable{
 
 	int sourceFloor, destFloor;
 	
+	//Constructor for Person
 	public Person(int sourceFloor, int destFloor){
 		
 		this.sourceFloor = sourceFloor; 
@@ -11,48 +12,39 @@ public class Person implements Runnable{
 		
 	}
 
-	
 	@Override
 	public void run() {
 		
 		try {
-	
-			//making them wait if elevator is in critical section
+			//I wait if elevator is in critical section
 			while(!ElevatorScene.addPersonToWaitLine){} 
 			
-				ElevatorScene.scene.increamentNumberOfPeopleWaitingAtFloor(this.sourceFloor);
+			//I'm in the waiting line
+			ElevatorScene.scene.increamentNumberOfPeopleWaitingAtFloor(this.sourceFloor);
 			
-				//wait for their turn to go into the elevator
-				ElevatorScene.elevatorDoorInSemaphore[this.sourceFloor].acquire();
+			//I wait my turn to go into the elevator
+			ElevatorScene.elevatorDoorInSemaphore[this.sourceFloor].acquire();
 			
-				//I'm off the floor so I decrement the number for the floor
-				ElevatorScene.scene.decrementNumberOfPeopleWaitingAtFloor(this.sourceFloor);
+			//I'm off the floor so I decrement the number for the floor
+			ElevatorScene.scene.decrementNumberOfPeopleWaitingAtFloor(this.sourceFloor);
 				
-				//I'm in the elevator
-				ElevatorScene.scene.incrementNumberOfPeopleInElevator(0);
-				ElevatorScene.scene.incrementNumberOfPeopleForDestFloor(this.destFloor);
+			//I'm in the elevator
+			ElevatorScene.scene.incrementNumberOfPeopleInElevator(0);
+			ElevatorScene.scene.incrementNumberOfPeopleForDestFloor(this.destFloor);
 				
+			//I want to go out of the elevator
+			ElevatorScene.elevatorDoorOutSemaphore[this.destFloor].acquire();
 				
-				//I want to go out of the elevator
-				ElevatorScene.elevatorDoorOutSemaphore[this.destFloor].acquire();
+			//I'm off the elevator
+			ElevatorScene.scene.decrementNumberOfPeopleInElevator(0);
+			ElevatorScene.scene.decrementNumberOfPeopleForDestFloor(this.destFloor);
 				
-				
-				//I'm off the elevator
-				ElevatorScene.scene.decrementNumberOfPeopleInElevator(0);
-				ElevatorScene.scene.decrementNumberOfPeopleForDestFloor(this.destFloor);
-				
-				//Added for better visualization, code from teacher
-				ElevatorScene.scene.personExitsAtFloor(this.destFloor);
+			//Added for better visualization, code from teacher
+			ElevatorScene.scene.personExitsAtFloor(this.destFloor);
 			
 			
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
-		
-		 
-		
+		}	
 	}
-	
-	
-
 }
