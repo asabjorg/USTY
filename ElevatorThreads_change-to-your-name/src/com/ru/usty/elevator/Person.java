@@ -19,7 +19,9 @@ public class Person implements Runnable{
 	
 			//making them wait if elevator is in critical section
 			while(!ElevatorScene.addPersonToWaitLine){} 
-				
+			
+				ElevatorScene.scene.increamentNumberOfPeopleWaitingAtFloor(this.sourceFloor);
+			
 				//wait for their turn to go into the elevator
 				ElevatorScene.elevatorDoorInSemaphore[this.sourceFloor].acquire();
 			

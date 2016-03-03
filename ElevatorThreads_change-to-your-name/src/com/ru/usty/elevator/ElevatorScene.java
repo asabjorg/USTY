@@ -204,7 +204,8 @@ public class ElevatorScene {
 		 */
 
 		//dumb code, replace it!
-		personCount.set(sourceFloor, personCount.get(sourceFloor) + 1);
+		//increamentNumberOfPeopleWaitingAtFloor(sourceFloor);
+		//personCount.set(sourceFloor, personCount.get(sourceFloor) + 1);
 		
 		//return the person into the system
 		return thread;  //this means that the testSuite will not wait for the threads to finish
@@ -264,7 +265,7 @@ public class ElevatorScene {
 		try {
 			countOutMutex.acquire();
 				ElevatorScene.numberOfPeopleForDestFloor[floor] += 1;
-				countOutMutex.release();
+			countOutMutex.release();
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -333,8 +334,7 @@ public class ElevatorScene {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-			
+		}			
 		
 	}
 
