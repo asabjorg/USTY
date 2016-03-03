@@ -40,11 +40,14 @@ public class ElevatorScene {
 	public static boolean elevatorMove;
 	
 	private Thread elevatorThread = null;
+	
+	public static Semaphore inSem; 
+	public static Semaphore outSem;
 
 	
 	//TO SPEED THINGS UP WHEN TESTING,
 	//feel free to change this.  It will be changed during grading
-	public static final int VISUALIZATION_WAIT_TIME = 500;  //milliseconds
+	public static final int VISUALIZATION_WAIT_TIME = 13;  //milliseconds
 	
 	public int numberOfFloors;
 	private int numberOfElevators;
@@ -135,6 +138,8 @@ public class ElevatorScene {
 		elevatorCountMutex = new Semaphore(1);
 		floorCountMutex = new Semaphore(1); 
 		countOutMutex = new Semaphore(1);
+		inSem = new  Semaphore(1);
+		outSem = new Semaphore(1);
 		
 		for(int i = 0 ; i < numberOfFloors; i++){ //init the array for in sem. to 0
 			
@@ -199,7 +204,8 @@ public class ElevatorScene {
 		 */
 
 		//dumb code, replace it!
-		personCount.set(sourceFloor, personCount.get(sourceFloor) + 1);
+		//increamentNumberOfPeopleWaitingAtFloor(sourceFloor);
+		//personCount.set(sourceFloor, personCount.get(sourceFloor) + 1);
 		
 		//return the person into the system
 		return thread;  //this means that the testSuite will not wait for the threads to finish
@@ -259,7 +265,7 @@ public class ElevatorScene {
 		try {
 			countOutMutex.acquire();
 				ElevatorScene.numberOfPeopleForDestFloor[floor] += 1;
-				countOutMutex.release();
+			countOutMutex.release();
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -328,8 +334,7 @@ public class ElevatorScene {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-			
+		}			
 		
 	}
 
