@@ -16,8 +16,6 @@ public class ElevatorScene {
 	public static Semaphore floorCountMutex; 
 	public static Semaphore elevatorCountMutex;
 	public static Semaphore countOutMutex;
-	public static Semaphore inSem; 
-	public static Semaphore outSem;
 	
 	//Counting variables
 	public static int floorCount = 0; 
@@ -45,7 +43,7 @@ public class ElevatorScene {
 		try {
 			
 			exitedCountMutex.acquire();
-			exitedCount.set(floor, (exitedCount.get(floor) + 1));
+				exitedCount.set(floor, (exitedCount.get(floor) + 1));
 			exitedCountMutex.release();
 
 		} catch (InterruptedException e) {
@@ -64,6 +62,7 @@ public class ElevatorScene {
 	} //End of added code from teacher
 
 	//Base function: Initializes variables before starting the elevator
+	@SuppressWarnings("deprecation")
 	public void restartScene(int numberOfFloors, int numberOfElevators) {
 	
 		//In the beginning of a scene we will kill off all elevatorThreads that are alive.
@@ -100,6 +99,7 @@ public class ElevatorScene {
 		elevatorsMayDie = false;	
 		elevatorMove = true;
 		scene = this;	
+		floorCount = 0;
 		this.numberOfFloors = numberOfFloors;
 		this.numberOfElevators = numberOfElevators;	
 		numberOfPeopleForDestFloor = new int[numberOfFloors];
@@ -122,8 +122,6 @@ public class ElevatorScene {
 		elevatorCountMutex = new Semaphore(1);
 		floorCountMutex = new Semaphore(1); 
 		countOutMutex = new Semaphore(1);
-		inSem = new  Semaphore(1);
-		outSem = new Semaphore(1);
 		
 		//Initialize the array for in semaphores to 0
 		for(int i = 0 ; i < numberOfFloors; i++){ 
@@ -167,7 +165,7 @@ public class ElevatorScene {
 		//Create new thread for the person and start it.
 		Thread thread = new Thread(new Person(sourceFloor, destinationFloor));
 		thread.start();
-		
+
 		//Returns the person to the system.
 		return thread;  
 	}
@@ -251,6 +249,12 @@ public class ElevatorScene {
 	
 	//****End functions for number of people in elevator****//
 	//****Begin functions for number of people for destination floor****//
+	
+	//Basic function: Returns the amount of people that have the same particular destination floor
+	public int getNumberOfPeopleForDestFloor(int floor){
+		
+		return ElevatorScene.numberOfPeopleForDestFloor[floor];
+	}
 	
 	//Basic function: Decrements the number of people for a certain destination floor
 	public void decrementNumberOfPeopleForDestFloor(int floor){

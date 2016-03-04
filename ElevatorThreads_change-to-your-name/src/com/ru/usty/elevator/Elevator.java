@@ -20,7 +20,7 @@ public class Elevator implements Runnable  {
 			}
 			
 			//Temp variable for NumberOfPeopleInElevator since it is decremented during the for loop
-			int tempNumberOfPeopleInElevator = (6 - ElevatorScene.numberOfPeopleInElevator);
+			int tempNumberOfPeopleInElevator = (6 - ElevatorScene.scene.getNumberOfPeopleInElevator(0));
 			
 			//Releases person threads from waiting line
 			for(int i=0; i < tempNumberOfPeopleInElevator; i++){
@@ -40,10 +40,10 @@ public class Elevator implements Runnable  {
 			
 			
 			//Taking back release with acquire if the elevator is leaving with empty spaces. 
-			for(int i = 0 ; i < (6 - ElevatorScene.numberOfPeopleInElevator); i++){
+			for(int i = 0 ; i < (6 - ElevatorScene.scene.getNumberOfPeopleInElevator(0)); i++){
 					
 				try {
-					ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.floorCount].acquire();
+					ElevatorScene.elevatorDoorInSemaphore[ElevatorScene.scene.getCurrentFloorForElevator(0)].acquire();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} 	
@@ -51,10 +51,10 @@ public class Elevator implements Runnable  {
 			
 			//elevatorMove is changed if the elevator is at the top or bottom
 			//To know if to decrement or increment the floor count
-			if(ElevatorScene.floorCount == (ElevatorScene.scene.numberOfFloors - 1)){
+			if(ElevatorScene.scene.getCurrentFloorForElevator(0) == (ElevatorScene.scene.getNumberOfFloors() - 1)){
 				ElevatorScene.elevatorMove = false;
 				 	
-			} else if (ElevatorScene.floorCount == 0){
+			} else if (ElevatorScene.scene.getCurrentFloorForElevator(0) == 0){
 				ElevatorScene.elevatorMove = true;
 			}
 			
@@ -76,12 +76,12 @@ public class Elevator implements Runnable  {
 			}
 			
 			//Temp variable for NumberOfPeopleForDestFloor since it is decremented during the for loop
-			int tempNumberOfPeopleForDestFloor = ElevatorScene.numberOfPeopleForDestFloor[ElevatorScene.floorCount];
+			int tempNumberOfPeopleForDestFloor = ElevatorScene.scene.getNumberOfPeopleForDestFloor(ElevatorScene.scene.getCurrentFloorForElevator(0));
 			
 			//Elevator releases person threads from elevator
 			for(int i=0; i < tempNumberOfPeopleForDestFloor; i++){
 				
-				ElevatorScene.elevatorDoorOutSemaphore[ElevatorScene.floorCount].release(); //signal
+				ElevatorScene.elevatorDoorOutSemaphore[ElevatorScene.scene.getCurrentFloorForElevator(0)].release(); //signal
 			}
 			
 			//Elevator sleeps

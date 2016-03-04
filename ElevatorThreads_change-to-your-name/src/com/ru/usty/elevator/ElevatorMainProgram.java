@@ -11,7 +11,7 @@ public class ElevatorMainProgram {
 			Thread.sleep(1000);
 			
 			//Runs one test
-			/*TestSuite.runTest(9);
+			/*TestSuite.runTest(2);
 			Thread.sleep(2000);*/
 
 			//Runs all test
